@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E0F7FA"
+    android:padding="20dp"
+    android:animateLayoutChanges="true"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设备状态：未连接"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#006064"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#B2EBF2"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+
+    <LinearLayout
+        android:id="@+id/layout_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:weightSum="2"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <TextView
+            android:id="@+id/tv_mood_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="心情: 开心 (80)"
+            android:textColor="#0097A7"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_battery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="电量: 100%"
+            android:textColor="#0097A7"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_system_ctrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_status">
+
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="连接服务器"
+            android:textSize="12sp"
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:id="@+id/btn_free_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="自由巡逻"
+            android:textSize="12sp"
+            android:backgroundTint="#4DB6AC"
+            android:layout_marginStart="5dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="停止活动"
+        android:textStyle="bold"
+        android:backgroundTint="#EF5350"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_system_ctrl"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/btn_stop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:id="@+id/layout_action_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:background="#B2EBF2"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="✨ 趣味交互动作"
+                    android:textColor="#006064"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="▼"
+                    android:textColor="#006064"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <GridLayout
+                android:id="@+id/grid_actions_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btn_act_stand"
+                    android:text="立正"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_squat"
+                    android:text="蹲下"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_lie"
+                    android:text="趴下"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_sleep"
+                    android:text="睡觉"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_greet"
+                    android:text="打招呼"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_wag"
+                    android:text="摇尾巴"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_sway"
+                    android:text="摇摆"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"/>
+
+                <Button
+                    android:id="@+id/btn_act_custom"
+                    android:text="撒娇"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="4dp"
+                    android:textColor="#E91E63"/>
+            </GridLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_dpad"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/circle_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/btn_up"
+            android:text="▲"
+            android:textSize="24sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="5dp"/>
+
+        <Button
+            android:id="@+id/btn_down"
+            android:text="▼"
+            android:textSize="24sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="5dp"/>
+
+        <Button
+            android:id="@+id/btn_left"
+            android:text="◀"
+            android:textSize="24sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="5dp"/>
+
+        <Button
+            android:id="@+id/btn_right"
+            android:text="▶"
+            android:textSize="24sp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="5dp"/>
+
+        <ImageView
+            android:src="@android:drawable/ic_menu_compass"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="#006064"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
