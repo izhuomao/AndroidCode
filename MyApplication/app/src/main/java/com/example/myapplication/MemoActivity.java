@@ -50,6 +50,9 @@ public class MemoActivity extends AppCompatActivity implements MemoAdapter.OnMem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();  // 备忘录页面用自己的顶栏
+        }
         setContentView(R.layout.activity_memo);
 
         dbHelper = new MemoDbHelper(this);

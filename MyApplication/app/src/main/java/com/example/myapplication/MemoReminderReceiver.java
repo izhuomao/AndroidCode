@@ -7,48 +7,62 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
 /**
  * 备忘录提醒广播接收器
+ *
  * 闹钟触发时：
- * 1. 发送系统通知
- * 2. 启动 MainActivity 并携带提醒数据，让它通过 MQTT 通知 ESP32 桌宠
+ * 1. 发送系统通知（点击通知才打开 App，不会强制跳转）
+ * 2. 通过 Intent 启动 MqttService，让它发送提醒指令给 ESP32 桌宠
+ *    → 不再启动 MainActivity，不会打断用户当前操作
  */
 public class MemoReminderReceiver extends BroadcastReceiver {
+
+    private static final String TAG = "MemoReminderReceiver";
 
     public static final String CHANNEL_ID = "memo_reminder_channel";
     public static final String EXTRA_MEMO_TITLE = "memo_title";
     public static final String EXTRA_MEMO_CONTENT = "memo_content";
     public static final String EXTRA_MEMO_ID = "memo_id";
 
-    // ▼▼▼ 新增：用于触发桌宠提醒的 Action ▼▼▼
+    // 保留常量（向下兼容）
     public static final String ACTION_TRIGGER_PET_REMIND = "com.example.myapplication.TRIGGER_PET_REMIND";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String title = intent.getStringExtra(EXTRA_MEMO_TITLE);
+        String title   = intent.getStringExtra(EXTRA_MEMO_TITLE);
         String content = intent.getStringExtra(EXTRA_MEMO_CONTENT);
-        int memoId = intent.getIntExtra(EXTRA_MEMO_ID, 0);
+        int memoId     = intent.getIntExtra(EXTRA_MEMO_ID, 0);
 
         if (title == null) title = "茁猫提醒";
         if (content == null) content = "你有一条待办事项";
 
-        // 1. 发送系统通知
+        Log.d(TAG, "🔔 闹钟触发: " + title);
+
+        // 1. 发送系统通知（用户点击后才打开 MainActivity）
         createNotificationChannel(context);
         showNotification(context, title, content, memoId);
 
-        // 2. ▼▼▼ 新增：启动 MainActivity，让它通过 MQTT 通知桌宠 ▼▼▼
-        Intent mainIntent = new Intent(context, MainActivity.class);
-        mainIntent.setAction(ACTION_TRIGGER_PET_REMIND);
-        mainIntent.putExtra(EXTRA_MEMO_TITLE, title);
-        mainIntent.putExtra(EXTRA_MEMO_CONTENT, content);
-        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(mainIntent);
+        // 2. ★★★ 改为：发给 MqttService，让它通过 MQTT 通知桌宠 ★★★
+        //    不再 startActivity，不会强制跳转
+        Intent serviceIntent = new Intent(context, MqttService.class);
+        serviceIntent.setAction(MqttService.ACTION_SEND_REMINDER);
+        serviceIntent.putExtra(MqttService.EXTRA_REMINDER_CONTENT, content);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent);
+        } else {
+            context.startService(serviceIntent);
+        }
+
+        Log.d(TAG, "🔔 已通知 MqttService 发送桌宠提醒");
     }
 
     private void showNotification(Context context, String title, String content, int memoId) {
+        // 点击通知 → 打开 MainActivity（用户主动点击，不强制）
         Intent openIntent = new Intent(context, MainActivity.class);
         openIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
